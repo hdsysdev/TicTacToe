@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>TicTacToe</name></assembly>
+<members>
+<member name="T:FirstDemo.App.MainWindow">
+<summary>
+Window defined in MainWindow.xaml
+</summary>
+</member>
+</members>
+</doc>
