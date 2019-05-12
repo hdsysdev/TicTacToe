@@ -7,12 +7,12 @@ open Elmish.WPF
 //game design
 module TicTacToeDesign =
     //players X and O
-    type Player = PlayerX | PlayerO
+    type Player = PlayerX | PlayerO 
 
     //board positions
     //board made of horizontal and vertical components
-    type HorizontalPosition = Left | Center | Right 
-    type VerticalPosition = Top | Center | Bottom
+    type HorizontalPosition = Left | CenterH | Right 
+    type VerticalPosition = Top | CenterV | Bottom
     type SpacePosition = HorizontalPosition * VerticalPosition
 
     //board spaces
@@ -24,7 +24,20 @@ module TicTacToeDesign =
     type Space = {
         position : SpacePosition 
         state : SpaceSate
+        image : string
     }
+
+    let Spaces : Space array = [|
+        {position = (Left, Top); state = Empty; image = "dash.png"}
+        {position = (CenterH, Top); state = Empty; image = "dash.png"}
+        {position = (Right, Top); state = Empty; image = "dash.png"}
+        {position = (Left, CenterV); state = Empty; image = "dash.png"}
+        {position = (CenterH, CenterV); state = Empty; image = "dash.png"}
+        {position = (Right, CenterV); state = Empty; image = "dash.png"}
+        {position = (Left, Bottom); state = Empty; image = "dash.png"}
+        {position = (CenterH, Bottom); state = Empty; image = "dash.png"}
+        {position = (Right, Bottom); state = Empty; image = "dash.png"}
+        |]
 
 
     //player position
@@ -51,29 +64,53 @@ module TicTacToeDesign =
     //New game made by resetting TurnResult and GameState
     type NewGame<'GameState> = 'GameState * TurnResult
 
+
 //game logic 
 module TicTacToeLogic =
 
     open TicTacToeDesign
+    
+    let updateElement key f st = 
+        st |> Array.map (fun (k, v) -> if k = key then k, f v else k, v)
+
+    let replace index sub = Array.mapi (fun i x -> if i = index then sub else x)
 
     type Model =
-        {   Count: int
-            CurrentPlayer: Player 
-            Shape: string}
+        {   CurrentPlayer: Player 
+            Shape: string
+            Spaces: Space array}
     
     let init () =
-        {   Count = 0
-            //StepSize = 1 
+        {   //StepSize = 1 
             CurrentPlayer = PlayerX
-            Shape = "cross.jpg"}
+            Shape = "cross.jpg"
+            Spaces = [|
+            {position = (Left, Top); state = Empty; image = "dash.png"}
+            {position = (CenterH, Top); state = Empty; image = "dash.png"}
+            {position = (Right, Top); state = Empty; image = "dash.png"}
+            {position = (Left, CenterV); state = Empty; image = "dash.png"}
+            {position = (CenterH, CenterV); state = Empty; image = "dash.png"}
+            {position = (Right, CenterV); state = Empty; image = "dash.png"}
+            {position = (Left, Bottom); state = Empty; image = "dash.png"}
+            {position = (CenterH, Bottom); state = Empty; image = "dash.png"}
+            {position = (Right, Bottom); state = Empty; image = "dash.png"}
+            |]
+        }
 
-    let doMove p m : Model = m.CurrentPlayer = PlayerO 
+    let doMove p m : Model = 
+        match p with 
+        | "0x0" -> {m with Spaces = Spaces |> replace 0 {position=(Left, Top); state=Taken m.CurrentPlayer; image = if m.CurrentPlayer = PlayerX then "cross.png" else "circle.jpg"}}
+        | "0x1" -> {m with Spaces = Spaces |> replace 0 {position=(Left, Top); state=Taken m.CurrentPlayer; image = if m.CurrentPlayer = PlayerX then "cross.png" else "circle.jpg"}}
+
+        
+    //if p = "0x0" then m  
+    //    m with CurrentPlayer = PlayerO}
 
     //GameState used to keep track of the game
     //saves which board spaces are taken 
-    type GameState = {
-        spaces : Space list
-    }
+    //type GameState = {
+    //    spaces : Space list
+    //}
 
     //TODO: List horizontal positions 
 
@@ -92,6 +129,7 @@ module TicTacToeLogic =
 
     //TODO: Check lines for win
 
+    //TODO: Check for draw
 
 
 //game user interface
@@ -132,8 +170,8 @@ let bindings model dispatch =
         //ChangeShape calls function with coordinate parameter declared in the XAML
         //Pipes position parameter from XAML into ChangeShape then doMove 
         "ChangeShape" |> Binding.paramCmd (fun p m -> string p |> ChangeShape)
-        "Shape" |> Binding.oneWay (fun m -> m.Shape)
-        "CounterValue" |> Binding.oneWay (fun m -> m.Count)
+        "Shape" |> Binding.oneWay (fun m -> m.Spaces)
+        //"CounterValue" |> Binding.oneWay (fun m -> m.Count)
         //"Increment" |> Binding.cmd (fun m -> Increment)
         //"StepSize" |> Binding.twoWay
         //  (fun m -> float m.StepSize)
