@@ -27,6 +27,7 @@ module TicTacToeDesign =
         image : string
     }
 
+    //TODO: Try seperate from model GameState
     let Spaces : Space array = [|
         {position = (Left, Top); state = Empty; image = "dash.png"}
         {position = (CenterH, Top); state = Empty; image = "dash.png"}
@@ -39,6 +40,27 @@ module TicTacToeDesign =
         {position = (Right, Bottom); state = Empty; image = "dash.png"}
         |]
 
+    type Model =
+        {   CurrentPlayer: Player 
+            Shape: string
+            Spaces: Space array}
+    
+    let init () =
+        {   //StepSize = 1 
+            CurrentPlayer = PlayerX
+            Shape = "cross.jpg"
+            Spaces = [|
+            {position = (Left, Top); state = Empty; image = "dash.png"}
+            {position = (CenterH, Top); state = Empty; image = "dash.png"}
+            {position = (Right, Top); state = Empty; image = "dash.png"}
+            {position = (Left, CenterV); state = Empty; image = "dash.png"}
+            {position = (CenterH, CenterV); state = Empty; image = "dash.png"}
+            {position = (Right, CenterV); state = Empty; image = "dash.png"}
+            {position = (Left, Bottom); state = Empty; image = "dash.png"}
+            {position = (CenterH, Bottom); state = Empty; image = "dash.png"}
+            {position = (Right, Bottom); state = Empty; image = "dash.png"}
+            |]
+        }
 
     //player position
     //postion player puts a counter on their turn
@@ -75,34 +97,23 @@ module TicTacToeLogic =
 
     let replace index sub = Array.mapi (fun i x -> if i = index then sub else x)
 
-    type Model =
-        {   CurrentPlayer: Player 
-            Shape: string
-            Spaces: Space array}
     
-    let init () =
-        {   //StepSize = 1 
-            CurrentPlayer = PlayerX
-            Shape = "cross.jpg"
-            Spaces = [|
-            {position = (Left, Top); state = Empty; image = "dash.png"}
-            {position = (CenterH, Top); state = Empty; image = "dash.png"}
-            {position = (Right, Top); state = Empty; image = "dash.png"}
-            {position = (Left, CenterV); state = Empty; image = "dash.png"}
-            {position = (CenterH, CenterV); state = Empty; image = "dash.png"}
-            {position = (Right, CenterV); state = Empty; image = "dash.png"}
-            {position = (Left, Bottom); state = Empty; image = "dash.png"}
-            {position = (CenterH, Bottom); state = Empty; image = "dash.png"}
-            {position = (Right, Bottom); state = Empty; image = "dash.png"}
-            |]
-        }
+    
+    let changePlayer m = 
+        match m.CurrentPlayer with
+        | PlayerX -> {m with CurrentPlayer = PlayerO}
+        | PlayerO -> {m with CurrentPlayer = PlayerX}
 
     let doMove p m : Model = 
         match p with 
-        | "0x0" -> {m with Spaces = Spaces |> replace 0 {position=(Left, Top); state=Taken m.CurrentPlayer; image = if m.CurrentPlayer = PlayerX then "cross.png" else "circle.jpg"}}
-        | "0x1" -> {m with Spaces = Spaces |> replace 0 {position=(Left, Top); state=Taken m.CurrentPlayer; image = if m.CurrentPlayer = PlayerX then "cross.png" else "circle.jpg"}}
-
+        | "0x0" -> 
+        match m.Spaces.[0].state with
+            | Empty -> {m with Spaces = Spaces |> replace 0 {position=(Left, Top); state=Taken m.CurrentPlayer; image = if m.CurrentPlayer = PlayerX then "cross.png" else "circle.jpg"}}
+            | Taken _ -> m
+        | "0x1" -> {m with Spaces = Spaces |> replace 1 {position=(CenterH, Top); state=Taken m.CurrentPlayer; image = if m.CurrentPlayer = PlayerX then "cross.png" else "circle.jpg"}}
+        | _ -> changePlayer m 
         
+      
     //if p = "0x0" then m  
     //    m with CurrentPlayer = PlayerO}
 
@@ -148,7 +159,7 @@ type Msg =
     | ChangeShape of string
     //| Increment
     //| SetStepSize of int
-    | Reset 
+    //| Reset 
 
 let update msg m =
     match msg with
@@ -159,7 +170,7 @@ let update msg m =
         | ChangeShape p -> doMove p m
         //| Increment -> { m with Count = m.Count + m.StepSize }
         //| SetStepSize x -> { m with StepSize = x }
-        | Reset -> init ()
+        //| Reset -> init ()
 
 open Elmish.WPF
 
@@ -170,7 +181,16 @@ let bindings model dispatch =
         //ChangeShape calls function with coordinate parameter declared in the XAML
         //Pipes position parameter from XAML into ChangeShape then doMove 
         "ChangeShape" |> Binding.paramCmd (fun p m -> string p |> ChangeShape)
-        "Shape" |> Binding.oneWay (fun m -> m.Spaces)
+        //TODO:TRY TWO WAY BINDINGS, LOOK UP XAML TUTORIAL ON IT
+        "Shape0" |> /Binding.oneWay (fun m -> m.Spaces.[0].image)
+        "Shape1" |> Binding.oneWay (fun m -> m.Spaces.[1].image)
+        "Shape2" |> Binding.oneWay (fun m -> m.Spaces.[2].image)
+        "Shape3" |> Binding.oneWay (fun m -> m.Spaces.[3].image)
+        "Shape4" |> Binding.oneWay (fun m -> m.Spaces.[4].image)
+        "Shape5" |> Binding.oneWay (fun m -> m.Spaces.[5].image)
+        "Shape6" |> Binding.oneWay (fun m -> m.Spaces.[6].image)
+        "Shape7" |> Binding.oneWay (fun m -> m.Spaces.[7].image)
+        "Shape8" |> Binding.oneWay (fun m -> m.Spaces.[8].image)
         //"CounterValue" |> Binding.oneWay (fun m -> m.Count)
         //"Increment" |> Binding.cmd (fun m -> Increment)
         //"StepSize" |> Binding.twoWay

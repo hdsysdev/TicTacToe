@@ -18,64 +18,50 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="75"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Grid.Column="0" x:Name="_0x1" CommandParameter="0x0" Command="{Binding ChangeShape}"  Margin="12,0,11,0">
+        <Button Grid.Row="0" Grid.Column="0" CommandParameter="0x0" Command="{Binding ChangeShape}"  Margin="12,0,11,0">
             <StackPanel>
-                <Image Source="{Binding Shape.[0].image}" />
+                <Image Source="{Binding Shape0}" />
             </StackPanel>
         </Button>
-        <Button Grid.Row="0" Grid.Column="1" Margin="12,0" >
+        <Button Grid.Row="0" Grid.Column="1" CommandParameter="0x1" Command="{Binding ChangeShape}" Margin="12,0" >
             <StackPanel>
-                <Image Source="pack://siteoforigin:,,,/circle.jpg" />
+                <Image Source="{Binding Shape1}" />
             </StackPanel>
         </Button>
-        <Button Grid.Row="0" Grid.Column="2" Command="{Binding Increment}" Content="Increment" Margin="11,0,12,0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="cross.png"/>
-                </ControlTemplate>
-            </Button.Template>
+        <Button Grid.Row="0" Grid.Column="2" CommandParameter="0x2" Command="{Binding ChangeShape}" Margin="11,0,12,0">
+            <StackPanel>
+                <Image Source="{Binding Shape2}" />
+            </StackPanel>
         </Button>
-        <Button Grid.Row="1" Grid.Column="0" Command="{Binding Increment}" Content="Increment" Margin="12,0,11,0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image />
-                </ControlTemplate>
-            </Button.Template>
+        <Button Grid.Row="1" Grid.Column="0" CommandParameter="1x0" Command="{Binding ChangeShape}" Margin="12,0,11,0">
+            <StackPanel>
+                <Image Source="{Binding Shape3}" />
+            </StackPanel>
         </Button>
-        <Button Grid.Row="1" Grid.Column="1" Command="{Binding Increment}" Content="Increment" Margin="12,0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="pack://siteoforigin:,,,/cross.png"/>
-                </ControlTemplate>
-            </Button.Template>
+        <Button Grid.Row="1" Grid.Column="1" CommandParameter="1x1" Command="{Binding ChangeShape}" Margin="12,0">
+            <StackPanel>
+                <Image Source="{Binding Shape4}" />
+            </StackPanel>
         </Button>
-        <Button Grid.Row="1" Grid.Column="2" Command="{Binding Increment}" Content="Increment" Margin="11,0,12,0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="cross.png"/>
-                </ControlTemplate>
-            </Button.Template>
+        <Button Grid.Row="1" Grid.Column="2" CommandParameter="1x2" Command="{Binding ChangeShape}" Margin="11,0,12,0">
+            <StackPanel>
+                <Image Source="{Binding Shape5}" />
+            </StackPanel>
         </Button>
-        <Button Grid.Row="2" Grid.Column="0" Command="{Binding Increment}" Content="Increment" Margin="12,0,11,0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="cross.png"/>
-                </ControlTemplate>
-            </Button.Template>
+        <Button Grid.Row="2" Grid.Column="0" CommandParameter="2x0" Command="{Binding ChangeShape}" Margin="12,0,11,0">
+            <StackPanel>
+                <Image Source="{Binding Shape6}" />
+            </StackPanel>
         </Button>
-        <Button Grid.Row="2" Grid.Column="1" Command="{Binding Increment}" Content="Increment" Margin="12,0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="cross.png"/>
-                </ControlTemplate>
-            </Button.Template>
+        <Button Grid.Row="2" Grid.Column="1" CommandParameter="2x1" Command="{Binding ChangeShape}" Margin="12,0">
+            <StackPanel>
+                <Image Source="{Binding Shape7}" />
+            </StackPanel>
         </Button>
-        <Button Grid.Row="2" Grid.Column="2" Command="{Binding Increment}" Content="Increment" Margin="11,0,12,0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="cross.png"/>
-                </ControlTemplate>
-            </Button.Template>
+        <Button Grid.Row="2" Grid.Column="2" CommandParameter="2x2" Command="{Binding ChangeShape}" Margin="11,0,12,0">
+            <StackPanel>
+                <Image Source="{Binding Shape8}" />
+            </StackPanel>
         </Button>
         <Label Content="Player's Turn: " FontSize="21" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Bottom" Margin="0,21,0,0" />
         <Image Source="cross.png" Grid.Row="3" Grid.Column="1" Width="35" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
